@@ -537,9 +537,15 @@
       box-shadow: 0 4px 24px rgba(61,124,201,0.12);
     }
     .ministry-icon {
-      font-size: 1.5rem;
+      width: 42px;
+      height: 42px;
+      color: var(--blue-light);
       flex-shrink: 0;
-      line-height: 1;
+    }
+
+    .ministry-icon svg {
+      width: 100%;
+      height: 100%;
     }
     .ministry-info h3 {
       font-family: var(--font-title);
@@ -781,17 +787,17 @@
         <p class="section-label">Présentation</p>
         <h2>L'Île-Continent</h2>
         <!-- ★ TEXTE DE PRÉSENTATION — MODIFIABLE ICI ★ -->
-        <p>Babel est un Royaume insulaire souveraine située au croisement des grandes routes maritimes. Entourée par des mers aux courants légendaires, l'île abrite en son cœur une chaîne montagneuse ancienne et de vastes forêts millénaires.</p>
+        <p>Babel est un royaume insulaire souverain situé au croisement des grandes routes maritimes. Entourée par des mers aux courants légendaires, l'île abrite en son cœur une chaîne montagneuse ancienne et de vastes forêts millénaires.</p>
         <p>Fondée sur le principe de la navigation comme art de gouverner, Babel doit son nom à la diversité des langues et des peuples qui ont convergé vers ses côtes au fil des siècles.</p>
 
         <!-- ★ STATISTIQUES — MODIFIER LES VALEURS ICI ★ -->
         <div class="stats-bar">
           <div class="stat-pill">
-            <span class="stat-value">4,2 M (placeholder)</span>
+            <span class="stat-value">65200</span>
             <span class="stat-label">Habitants</span>
           </div>
           <div class="stat-pill">
-            <span class="stat-value">87 400 km² (placeholder)</span>
+            <span class="stat-value">36 km²</span>
             <span class="stat-label">Superficie</span>
           </div>
           <div class="stat-pill">
@@ -843,7 +849,7 @@
   <div class="container">
     <p class="section-label">Communiqués Officiels</p>
     <h2>Actualités de Babel</h2>
-    <p class="section-lead">Les dernières nouvelles et décrets officiels de la République.</p>
+    <p class="section-lead">Les dernières nouvelles et proclamations officielles du Royaume.</p>
 
     <!-- ★ GRILLE D'ARTICLES — AJOUTER DES CARTES VIA LE BOUTON + ★ -->
     <div class="news-grid" id="newsGrid">
@@ -852,16 +858,15 @@
       <div class="news-card">
         <span class="news-tag">Décret Royal</span>
         <h3>Proclamation des Fêtes Nationales de la Traversée</h3>
-        <p>Le Parlement de Babel a voté l'instauration d'une semaine nationale dédiée à la commémoration de la Grande Traversée fondatrice.</p>
-        <p class="news-date">15 Floréal AN I</p>
+        <p>Le Conseil Royal de Babel a voté l'instauration d'une semaine nationale dédiée à la commémoration de la Grande Traversée fondatrice.</p>
+        <p class="news-date">15 Avril 2026</p>
       </div>
-
       <!-- Exemple d'article 2 -->
       <div class="news-card">
         <span class="news-tag">Diplomatie</span>
         <h3>Ouverture d'une ambassade à Port-Céleste</h3>
         <p>Le Royaume de Babel inaugurera prochainement sa première ambassade permanente dans la ville de Port-Céleste, consolidant ses liens régionaux.</p>
-        <p class="news-date">3 Messidor AN I</p>
+        <p class="news-date">3 Juin 2026</p>
       </div>
 
       <!-- Exemple d'article 3 -->
@@ -869,7 +874,7 @@
         <span class="news-tag">Économie</span>
         <h3>Rapport annuel : croissance du commerce maritime</h3>
         <p>Les échanges maritimes de Babel ont augmenté de 14 % cette année, portés par les nouvelles routes commerciales avec les nations de l'Est.</p>
-        <p class="news-date">28 Germinal AN I</p>
+        <p class="news-date">28 Mars 2026</p>
       </div>
 
       <!-- Bouton ajouter -->
@@ -893,14 +898,26 @@
     <!-- ★ MINISTÈRES — AJOUTER / MODIFIER LES CARTES ICI ★ -->
     <div class="ministries-grid">
       <div class="ministry-card">
-        <span class="ministry-icon">⚓</span>
+        <div class="ministry-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M12 3v18"/>
+            <path d="M5 10a7 7 0 0 0 14 0"/>
+            <circle cx="12" cy="5" r="2"/>
+          </svg>
+        </div>
         <div class="ministry-info">
           <h3>Ministère de l'Information</h3>
           <p>Communication, Ressources Humaines.</p>
         </div>
       </div>
       <div class="ministry-card">
-        <span class="ministry-icon">⭐</span>
+        <div class="ministry-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M12 3v18"/>
+            <path d="M3 12h18"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
         <div class="ministry-info">
           <h3>Ministère de l'Économie</h3>
           <p>Conversion, contrôle du marché, affaires économiques externes.</p>
@@ -942,7 +959,7 @@
 <footer>
   <div class="footer-logo">BABEL</div>
   <!-- ★ TEXTE DU PIED DE PAGE — MODIFIER ICI ★ -->
-  <p>© AN I — Royaume Insulaire de Babel · Tous droits réservés · Portail officiel</p>
+  <p>© 2026 — Royaume Insulaire de Babel · Tous droits réservés · Portail officiel</p>
 </footer>
 
 <!-- ════════════ MODAL AJOUT ARTICLE ════════════ -->
