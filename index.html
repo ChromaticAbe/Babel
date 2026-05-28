@@ -872,92 +872,6 @@
     .read-modal-close:hover { color: var(--white); border-color: var(--white); }
 
     /* ═══════════════════════════════════════════
-       MINISTÈRES / GOVERNMENT
-    ═══════════════════════════════════════════ */
-    #gouvernement {
-      background: var(--night-2);
-      border-top: 1px solid var(--border);
-    }
-    .ministries-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.2rem;
-      margin-top: 3rem;
-    }
-    .ministry-card {
-      background: rgba(22,24,31,0.5);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1.4rem 1.4rem 1.4rem 1.2rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.9rem;
-      transition: border-color 0.3s, box-shadow 0.3s;
-    }
-    .ministry-card:hover {
-      border-color: rgba(61,124,201,0.55);
-      box-shadow: 0 4px 24px rgba(61,124,201,0.12);
-    }
-    .ministry-icon {
-      width: 42px;
-      height: 42px;
-      color: var(--blue-light);
-      flex-shrink: 0;
-    }
-
-    .ministry-icon svg {
-      width: 100%;
-      height: 100%;
-    }
-    .ministry-info h3 {
-      font-family: var(--font-title);
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: 0.05em;
-      margin-bottom: 0.3rem;
-    }
-    .ministry-info p {
-      font-size: 0.75rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    /* ═══════════════════════════════════════════
-       CONTACT / AMBASSADES
-    ═══════════════════════════════════════════ */
-    #contact {
-      background: var(--night);
-      text-align: center;
-    }
-    #contact .section-lead { margin: 1rem auto 2.5rem; }
-    .contact-strip {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    .contact-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .contact-item .icon { font-size: 1.6rem; }
-    .contact-item span {
-      font-family: var(--font-title);
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .contact-item strong {
-      font-size: 0.9rem;
-      color: var(--blue-light);
-    }
-
-    /* ═══════════════════════════════════════════
        FOOTER
     ═══════════════════════════════════════════ */
     footer {
@@ -1096,8 +1010,6 @@
     <li><a href="#apropos">À Propos</a></li>
     <li><a href="#symboles">Symboles</a></li>
     <li><a href="#actualites">Actualités</a></li>
-    <li><a href="#gouvernement">Gouvernement</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
@@ -1241,73 +1153,6 @@
     <!-- ANCIEN NEWSGRIP SUPPRIME — remplacé par journal timeline ci-dessus -->
     <div style="display:none" id="newsGrid">
 
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ GOUVERNEMENT ════════════ -->
-<section id="gouvernement">
-  <div class="container">
-    <p class="section-label">Institutions</p>
-    <h2>Gouvernement de Babel</h2>
-    <p class="section-lead">Le Royaume est organisé en ministères spécialisés, chacun gardien d'un domaine vital de la nation.</p>
-
-    <!-- ★ MINISTÈRES — AJOUTER / MODIFIER LES CARTES ICI ★ -->
-    <div class="ministries-grid">
-      <div class="ministry-card">
-        <div class="ministry-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-            <path d="M12 3v18"/>
-            <path d="M5 10a7 7 0 0 0 14 0"/>
-            <circle cx="12" cy="5" r="2"/>
-          </svg>
-        </div>
-        <div class="ministry-info">
-          <h3>Ministère de l'Information</h3>
-          <p>Communication, Ressources Humaines.</p>
-        </div>
-      </div>
-      <div class="ministry-card">
-        <div class="ministry-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-            <path d="M12 3v18"/>
-            <path d="M3 12h18"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-        </div>
-        <div class="ministry-info">
-          <h3>Ministère de l'Économie</h3>
-          <p>Conversion, contrôle du marché, affaires économiques externes.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ CONTACT ════════════ -->
-<section id="contact">
-  <div class="container">
-    <p class="section-label">Relations Extérieures</p>
-    <h2>Nous Contacter</h2>
-    <p class="section-lead">Pour les demandes diplomatiques, consulaires ou d'information officielle.</p>
-
-    <!-- ★ INFORMATIONS DE CONTACT — MODIFIER ICI ★ -->
-    <div class="contact-strip">
-      <div class="contact-item">
-        <span class="icon">🏛️</span>
-        <span>Palais de la Boussole</span>
-        <strong>Babel-City, BP 001</strong>
-      </div>
-      <div class="contact-item">
-        <span class="icon">✉️</span>
-        <span>Courrier Diplomatique</span>
-        <strong>diplomatie@babel.gov</strong>
-      </div>
-      <div class="contact-item">
-        <span class="icon">📡</span>
-        <span>Radio Officielle</span>
-        <strong>Fréquence 98.6 MHz</strong>
-      </div>
     </div>
   </div>
 </section>
