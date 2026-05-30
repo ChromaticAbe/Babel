@@ -999,8 +999,284 @@
     .modal-close:hover { color: var(--white); }
 
     /* ═══════════════════════════════════════════
-       CONVERTISSEUR DE DEVISES
+       CHRONIQUES DE BABEL
     ═══════════════════════════════════════════ */
+    #chroniques {
+      background: linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
+      border-top: 1px solid var(--border);
+    }
+
+    /* Era grouping */
+    .chro-era-group { margin-bottom: 4rem; }
+
+    .chro-era-header {
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+      margin-bottom: 2rem;
+      position: sticky;
+      top: 60px;
+      z-index: 10;
+      background: var(--night);
+      padding: 0.7rem 0;
+    }
+    .chro-era-badge {
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.28);
+      border-radius: 2px;
+      padding: 0.35rem 1.1rem;
+      white-space: nowrap;
+    }
+    .chro-era-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(201,168,76,0.18), transparent);
+    }
+    .chro-era-count {
+      font-family: var(--font-title);
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      color: rgba(140,165,200,0.38);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* Vertical spine timeline */
+    .chro-timeline {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+    .chro-timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(61,124,201,0.4), rgba(61,124,201,0.08));
+    }
+
+    /* Individual event */
+    .chro-event {
+      position: relative;
+      margin-bottom: 1.4rem;
+      animation: entryIn 0.35s ease both;
+    }
+    .chro-event::before {
+      content: '';
+      position: absolute;
+      left: -2.5rem;
+      top: 1.3rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--night-2);
+      border: 2px solid var(--blue);
+      box-shadow: 0 0 10px rgba(61,124,201,0.5);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .chro-event:hover::before {
+      border-color: var(--gold);
+      box-shadow: 0 0 14px rgba(201,168,76,0.5);
+    }
+    /* Milestone marker */
+    .chro-event.milestone::before {
+      width: 14px;
+      height: 14px;
+      left: calc(-2.5rem - 2px);
+      background: var(--gold);
+      border-color: var(--gold-light);
+      box-shadow: 0 0 18px rgba(201,168,76,0.7);
+    }
+
+    .chro-card {
+      background: rgba(30,33,48,0.5);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue-dark);
+      border-radius: 0 6px 6px 0;
+      padding: 1.2rem 1.4rem 1.1rem 1.5rem;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s, border-left-color 0.25s, box-shadow 0.25s;
+    }
+    .chro-card:hover {
+      background: rgba(30,33,48,0.85);
+      border-left-color: var(--blue-light);
+      box-shadow: 0 6px 32px rgba(61,124,201,0.13);
+    }
+    .chro-event.milestone .chro-card {
+      border-left-color: var(--gold);
+      background: rgba(30,33,48,0.65);
+    }
+    .chro-event.milestone .chro-card:hover {
+      border-left-color: var(--gold-light);
+      box-shadow: 0 6px 32px rgba(201,168,76,0.18);
+    }
+
+    .chro-card-top {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .chro-year-tag {
+      font-family: var(--font-title);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--blue-light);
+      letter-spacing: 0.08em;
+      background: rgba(61,124,201,0.1);
+      border: 1px solid rgba(61,124,201,0.2);
+      border-radius: 2px;
+      padding: 0.1rem 0.55rem;
+    }
+    .chro-event.milestone .chro-year-tag {
+      color: var(--gold);
+      background: rgba(201,168,76,0.1);
+      border-color: rgba(201,168,76,0.25);
+    }
+    .chro-milestone-badge {
+      font-family: var(--font-title);
+      font-size: 0.55rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 2px;
+      padding: 0.12rem 0.55rem;
+    }
+    .chro-type-badge {
+      font-family: var(--font-title);
+      font-size: 0.55rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 0.12rem 0.55rem;
+      border-radius: 2px;
+    }
+    .chro-type-fondation   { color: #e8c87a; background: rgba(201,168,76,0.1);  border: 1px solid rgba(201,168,76,0.22); }
+    .chro-type-guerre      { color: #e87a7a; background: rgba(201,76,76,0.1);   border: 1px solid rgba(201,76,76,0.22); }
+    .chro-type-politique   { color: #7ac4e8; background: rgba(61,124,201,0.1);  border: 1px solid rgba(61,124,201,0.22); }
+    .chro-type-culture     { color: #c87ae8; background: rgba(168,76,201,0.1);  border: 1px solid rgba(168,76,201,0.22); }
+    .chro-type-exploration { color: #7ae8a4; background: rgba(76,201,120,0.1);  border: 1px solid rgba(76,201,120,0.22); }
+    .chro-type-economie    { color: #a8e87a; background: rgba(140,201,76,0.1);  border: 1px solid rgba(140,201,76,0.22); }
+    .chro-type-science     { color: #7ae8e8; background: rgba(76,201,201,0.1);  border: 1px solid rgba(76,201,201,0.22); }
+    .chro-type-autre       { color: var(--muted); background: rgba(140,165,200,0.07); border: 1px solid rgba(140,165,200,0.16); }
+
+    .chro-title {
+      font-family: var(--font-title);
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.4;
+      margin-bottom: 0.35rem;
+    }
+    .chro-excerpt {
+      font-size: 0.84rem;
+      color: rgba(242,244,248,0.48);
+      line-height: 1.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .chro-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 0.85rem;
+    }
+    .chro-source {
+      font-family: var(--font-title);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(140,165,200,0.5);
+    }
+    .chro-source strong { color: rgba(140,165,200,0.8); }
+    .chro-read-btn {
+      font-family: var(--font-title);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue-light);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.2s;
+    }
+    .chro-read-btn:hover { color: var(--white); }
+    .chro-read-btn svg { transition: transform 0.2s; }
+    .chro-read-btn:hover svg { transform: translateX(3px); }
+
+    /* Delete btn */
+    .chro-del {
+      position: absolute;
+      top: 0.7rem;
+      right: 0.7rem;
+      background: none;
+      border: none;
+      color: rgba(140,165,200,0.2);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 0.2rem 0.3rem;
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .chro-card:hover .chro-del { opacity: 1; }
+    .chro-del:hover { color: #e08080; }
+
+    /* Toolbar */
+    .chro-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .chro-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    /* Empty */
+    .chro-empty {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--muted);
+      display: none;
+    }
+    .chro-empty.visible { display: block; }
+    .chro-empty svg { opacity: 0.2; margin-bottom: 1rem; }
+    .chro-empty p {
+      font-family: var(--font-title);
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    /* Chronique read modal — reuse read-modal styles, just different watermark */
+    #chroReadModalOverlay .read-modal::before {
+      content: 'CHRONIQUES DE BABEL';
+    }
     #monnaies {
       background: linear-gradient(180deg, var(--night-2) 0%, var(--night) 100%);
       border-top: 1px solid var(--border);
@@ -1138,6 +1414,7 @@
     <li><a href="#apropos">À Propos</a></li>
     <li><a href="#symboles">Symboles</a></li>
     <li><a href="#monnaies">Monnaies</a></li>
+    <li><a href="#chroniques">Chroniques</a></li>
     <li><a href="#actualites">Actualités</a></li>
   </ul>
 </nav>
@@ -1364,6 +1641,38 @@
   </div>
 </section>
 
+<!-- ════════════ CHRONIQUES DE BABEL ════════════ -->
+<section id="chroniques">
+  <div class="container">
+    <p class="section-label">Histoire & Mémoire</p>
+    <h2>Chroniques de Babel</h2>
+    <p class="section-lead">Les grandes pages de l'histoire du Royaume — fondations, conquêtes, traités et instants fondateurs gravés dans la mémoire collective.</p>
+
+    <div class="chro-toolbar">
+      <div class="chro-filters" id="chroFilters">
+        <button class="filter-btn active" data-type="tous">Tout</button>
+        <button class="filter-btn" data-type="Fondation">Fondation</button>
+        <button class="filter-btn" data-type="Politique">Politique</button>
+        <button class="filter-btn" data-type="Guerre">Guerre</button>
+        <button class="filter-btn" data-type="Exploration">Exploration</button>
+        <button class="filter-btn" data-type="Culture">Culture</button>
+        <button class="filter-btn" data-type="Économie">Économie</button>
+        <button class="filter-btn" data-type="Science">Science</button>
+      </div>
+      <button class="journal-write-btn" id="chroWriteBtn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Nouvelle chronique
+      </button>
+    </div>
+
+    <div id="chroContainer"></div>
+    <div class="chro-empty" id="chroEmpty">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <p>Aucune chronique inscrite</p>
+    </div>
+  </div>
+</section>
+
 <!-- ════════════ JOURNAL / REGISTRE OFFICIEL ════════════ -->
 <section id="actualites">
   <div class="container">
@@ -1409,6 +1718,67 @@
   <!-- ★ TEXTE DU PIED DE PAGE — MODIFIER ICI ★ -->
   <p>© 2026 — Royaume Insulaire de Babel · Tous droits réservés · Portail officiel</p>
 </footer>
+
+<!-- ════════════ MODAL ÉCRITURE CHRONIQUE ════════════ -->
+<div class="modal-overlay" id="chroModalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="chroModalTitle">
+    <button class="modal-close" onclick="closeChroModal()" aria-label="Fermer">✕</button>
+    <h3 id="chroModalTitle">Nouvelle Chronique — Babel</h3>
+
+    <label for="chroType">Type d'événement</label>
+    <select id="chroType">
+      <option>Fondation</option>
+      <option>Politique</option>
+      <option>Guerre</option>
+      <option>Exploration</option>
+      <option>Culture</option>
+      <option>Économie</option>
+      <option>Science</option>
+      <option>Autre</option>
+    </select>
+
+    <label for="chroMilestone" style="display:flex;align-items:center;gap:0.5rem;flex-direction:row;margin-top:1rem;">
+      <input type="checkbox" id="chroMilestone" style="width:auto;accent-color:var(--gold)" />
+      <span>Événement fondateur (jalon historique)</span>
+    </label>
+
+    <label for="chroYear">Année / Date historique</label>
+    <input type="text" id="chroYear" placeholder="Ex : An 1, 1247, ~800 av. J-H., Ère de la Fondation…" />
+
+    <label for="chroEra">Ère / Époque</label>
+    <input type="text" id="chroEra" placeholder="Ex : Ère Fondatrice, Siècle d'Or, Époque Moderne…" />
+
+    <label for="chroTitle">Titre de l'événement</label>
+    <input type="text" id="chroTitle" placeholder="Intitulé de la chronique…" />
+
+    <label for="chroSource">Source / Auteur historique</label>
+    <input type="text" id="chroSource" placeholder="Ex : Annales Royales, Chroniqueur Aldren…" />
+
+    <label for="chroBody">Récit</label>
+    <textarea id="chroBody" placeholder="Narration de l'événement historique…" style="min-height:130px"></textarea>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeChroModal()">Annuler</button>
+      <button class="btn-save" onclick="saveChroEntry()">Inscrire aux Chroniques</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ MODAL LECTURE CHRONIQUE ════════════ -->
+<div class="read-modal-overlay" id="chroReadModalOverlay">
+  <div class="read-modal">
+    <button class="read-modal-close" onclick="closeChroReadModal()">✕ Fermer</button>
+    <div class="read-modal-header">
+      <div class="read-modal-meta">
+        <div class="read-modal-badges" id="chroRmBadges"></div>
+        <h2 id="chroRmTitle"></h2>
+      </div>
+    </div>
+    <div class="read-modal-info-row" id="chroRmInfoRow"></div>
+    <div class="read-modal-divider"></div>
+    <div class="read-modal-body" id="chroRmBody"></div>
+  </div>
+</div>
 
 <!-- ════════════ MODAL ÉCRITURE JOURNAL ════════════ -->
 <div class="modal-overlay" id="modalOverlay">
@@ -1474,6 +1844,250 @@
 </div>
 
 <script>
+/* ═══════════════════════════════════════════════════════
+   CHRONIQUES DE BABEL — système avec localStorage
+═══════════════════════════════════════════════════════ */
+
+const CHRO_KEY = 'babel_chroniques_v1';
+
+const DEFAULT_CHRONIQUES = [
+  {
+    id: 'c1',
+    type: 'Fondation',
+    milestone: true,
+    year: 'An 1',
+    era: 'Ère Fondatrice',
+    title: 'La Grande Traversée — Arrivée des Premiers Navigateurs',
+    source: 'Annales Royales de Babel',
+    body: 'Les premiers navigateurs, menés par l\'Amiral-Fondateur Kaelen, accostèrent sur les rivages occidentaux de l\'île après une traversée de quarante-trois jours en haute mer. Ce jour, désormais célébré comme la Fête de la Traversée, marque la naissance officielle du Royaume de Babel.\n\nKaelen planta la rose des vents dans la pierre du rivage, symbole de l\'orientation perpétuelle du peuple Babelien vers la connaissance et la navigation.'
+  },
+  {
+    id: 'c2',
+    type: 'Fondation',
+    milestone: false,
+    year: 'An 12',
+    era: 'Ère Fondatrice',
+    title: 'Construction du Premier Phare de Port-Céleste',
+    source: 'Archives de la Guilde des Bâtisseurs',
+    body: 'Douze ans après la fondation, la Guilde des Bâtisseurs acheva la construction du Grand Phare de Port-Céleste, visible à trente lieues en mer. Ce phare devint le symbole de la capitale et figure encore aujourd\'hui sur les armoiries royales.'
+  },
+  {
+    id: 'c3',
+    type: 'Politique',
+    milestone: true,
+    year: 'An 47',
+    era: 'Ère Fondatrice',
+    title: 'Promulgation de la Charte des Mers',
+    source: 'Conseil Royal — Actes fondamentaux',
+    body: 'Le Grand Conseil réuni en session solennelle promulgua la Charte des Mers, premier texte constitutionnel du Royaume. Ce document établit les droits fondamentaux des citoyens, la structure du Conseil Royal et les principes de navigation comme philosophie d\'État.\n\nLa Charte des Mers reste à ce jour la pierre angulaire de l\'ordre juridique Babelien.'
+  },
+  {
+    id: 'c4',
+    type: 'Exploration',
+    milestone: false,
+    year: 'An 113',
+    era: 'Siècle d\'Or',
+    title: 'Expédition Vers les Îles de l\'Est',
+    source: 'Journal de bord de l\'Amiral Seryne',
+    body: 'L\'Amiral Seryne quitta Port-Céleste à la tête de sept navires pour cartographier les routes orientales inexplorées. L\'expédition revint dix-huit mois plus tard avec des cartes inédites, des traités commerciaux et les premières relations diplomatiques avec les peuples de l\'Archipel de l\'Est.'
+  }
+];
+
+function loadChroniques() {
+  try {
+    const raw = localStorage.getItem(CHRO_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return DEFAULT_CHRONIQUES.map(e => ({...e}));
+}
+
+function saveChroniques(entries) {
+  try { localStorage.setItem(CHRO_KEY, JSON.stringify(entries)); } catch(e) {}
+}
+
+function chroTypeClass(type) {
+  const map = {
+    'Fondation':   'chro-type-fondation',
+    'Guerre':      'chro-type-guerre',
+    'Politique':   'chro-type-politique',
+    'Culture':     'chro-type-culture',
+    'Exploration': 'chro-type-exploration',
+    'Économie':    'chro-type-economie',
+    'Science':     'chro-type-science',
+    'Autre':       'chro-type-autre'
+  };
+  return map[type] || 'chro-type-autre';
+}
+
+let currentChroFilter = 'tous';
+
+function renderChroniques() {
+  const container = document.getElementById('chroContainer');
+  const empty     = document.getElementById('chroEmpty');
+  const entries   = loadChroniques();
+
+  const filtered = currentChroFilter === 'tous'
+    ? entries
+    : entries.filter(e => e.type === currentChroFilter);
+
+  if (filtered.length === 0) {
+    container.innerHTML = '';
+    empty.classList.add('visible');
+    return;
+  }
+  empty.classList.remove('visible');
+
+  // Group by era
+  const eras = {};
+  filtered.forEach(e => {
+    const era = e.era || 'Époque Inconnue';
+    if (!eras[era]) eras[era] = [];
+    eras[era].push(e);
+  });
+
+  // Sort eras by first entry's id order (insertion order)
+  const allEntries = loadChroniques();
+  const eraOrder = [];
+  allEntries.forEach(e => {
+    const era = e.era || 'Époque Inconnue';
+    if (!eraOrder.includes(era)) eraOrder.push(era);
+  });
+
+  let html = '';
+  eraOrder.forEach(era => {
+    if (!eras[era]) return;
+    const events = eras[era];
+    const countLabel = events.length === 1 ? '1 événement' : `${events.length} événements`;
+
+    html += `<div class="chro-era-group">
+      <div class="chro-era-header">
+        <div class="chro-era-badge">${esc(era)}</div>
+        <div class="chro-era-line"></div>
+        <div class="chro-era-count">${esc(countLabel)}</div>
+      </div>
+      <div class="chro-timeline">`;
+
+    events.forEach(entry => {
+      const milestoneClass = entry.milestone ? 'milestone' : '';
+      const excerpt = entry.body ? entry.body.substring(0, 130).replace(/\n/g, ' ') + (entry.body.length > 130 ? '…' : '') : '';
+
+      html += `<div class="chro-event ${milestoneClass}" data-id="${esc(entry.id)}">
+        <div class="chro-card" onclick="openChroEntry('${esc(entry.id)}')">
+          <button class="chro-del" onclick="deleteChroEntry(event,'${esc(entry.id)}')" title="Supprimer">✕</button>
+          <div class="chro-card-top">
+            <span class="chro-year-tag">${esc(entry.year || '—')}</span>
+            ${entry.milestone ? `<span class="chro-milestone-badge">⚑ Événement fondateur</span>` : ''}
+            <span class="chro-type-badge ${esc(chroTypeClass(entry.type))}">${esc(entry.type)}</span>
+          </div>
+          <div class="chro-title">${esc(entry.title)}</div>
+          ${excerpt ? `<div class="chro-excerpt">${esc(excerpt)}</div>` : ''}
+          <div class="chro-footer">
+            ${entry.source ? `<span class="chro-source">Source : <strong>${esc(entry.source)}</strong></span>` : ''}
+            <button class="chro-read-btn">
+              Lire
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function openChroEntry(id) {
+  const entry = loadChroniques().find(e => e.id === id);
+  if (!entry) return;
+
+  document.getElementById('chroRmBadges').innerHTML = `
+    <span class="chro-type-badge ${chroTypeClass(entry.type)}">${esc(entry.type)}</span>
+    ${entry.milestone ? '<span class="chro-milestone-badge">⚑ Événement fondateur</span>' : ''}
+  `;
+  document.getElementById('chroRmTitle').textContent = entry.title;
+  document.getElementById('chroRmInfoRow').innerHTML = `
+    <div class="read-modal-info-item">
+      <span>Année</span>
+      <strong>${esc(entry.year || '—')}</strong>
+    </div>
+    <div class="read-modal-info-item">
+      <span>Époque</span>
+      <strong>${esc(entry.era || '—')}</strong>
+    </div>
+    ${entry.source ? `<div class="read-modal-info-item"><span>Source</span><strong>${esc(entry.source)}</strong></div>` : ''}
+    <div class="read-modal-info-item">
+      <span>Référence</span>
+      <strong>#${esc(entry.id.toUpperCase())}</strong>
+    </div>
+  `;
+  document.getElementById('chroRmBody').textContent = entry.body || '';
+  document.getElementById('chroReadModalOverlay').classList.add('open');
+}
+
+function closeChroReadModal() {
+  document.getElementById('chroReadModalOverlay').classList.remove('open');
+}
+
+function deleteChroEntry(evt, id) {
+  evt.stopPropagation();
+  if (!confirm('Supprimer cette chronique ?')) return;
+  saveChroniques(loadChroniques().filter(e => e.id !== id));
+  renderChroniques();
+}
+
+document.getElementById('chroFilters').addEventListener('click', function(e) {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  this.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentChroFilter = btn.dataset.type;
+  renderChroniques();
+});
+
+function openChroModal() { document.getElementById('chroModalOverlay').classList.add('open'); }
+function closeChroModal() { document.getElementById('chroModalOverlay').classList.remove('open'); }
+
+document.getElementById('chroWriteBtn').addEventListener('click', openChroModal);
+document.getElementById('chroModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeChroModal();
+});
+document.getElementById('chroReadModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeChroReadModal();
+});
+
+function saveChroEntry() {
+  const type      = document.getElementById('chroType').value;
+  const milestone = document.getElementById('chroMilestone').checked;
+  const year      = document.getElementById('chroYear').value.trim();
+  const era       = document.getElementById('chroEra').value.trim();
+  const title     = document.getElementById('chroTitle').value.trim();
+  const source    = document.getElementById('chroSource').value.trim();
+  const body      = document.getElementById('chroBody').value.trim();
+
+  if (!title || !body) { alert('Veuillez remplir au moins le titre et le récit.'); return; }
+
+  const entry = {
+    id: 'c' + Date.now(),
+    type, milestone, year: year || '—', era: era || 'Époque Inconnue', title, source, body
+  };
+
+  const entries = loadChroniques();
+  entries.push(entry); // append chronologically at end
+  saveChroniques(entries);
+
+  ['chroYear','chroEra','chroTitle','chroSource','chroBody'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('chroMilestone').checked = false;
+  closeChroModal();
+  renderChroniques();
+}
+
+// Initialisation Chroniques
+renderChroniques();
+
 /* ═══════════════════════════════════════════════════════
    JOURNAL DE BABEL — système complet avec localStorage
 ═══════════════════════════════════════════════════════ */
