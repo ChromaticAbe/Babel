@@ -1571,12 +1571,12 @@
 <div id="region-selector" role="tablist" aria-label="Sélection de la région">
   <span class="region-label-general">Royaume de Babel</span>
   <div class="region-divider"></div>
-  <button class="region-tab active-babel" id="tab-babel" role="tab" aria-selected="true" onclick="switchRegion('babel')">
+  <button class="region-tab active-babel" id="tab-babel" role="tab" aria-selected="true">
     <span class="region-dot region-dot-babel"></span>
     Babel
   </button>
   <div class="region-divider"></div>
-  <button class="region-tab" id="tab-eder" role="tab" aria-selected="false" onclick="switchRegion('ederador')">
+  <button class="region-tab" id="tab-eder" role="tab" aria-selected="false">
     <span class="region-dot region-dot-eder"></span>
     Ederador
   </button>
@@ -2024,7 +2024,7 @@
 <!-- ════════════ MODAL ÉCRITURE JOURNAL (EDERADOR) ════════════ -->
 <div class="modal-overlay" id="ederModalOverlay">
   <div class="modal" role="dialog" aria-modal="true">
-    <button class="modal-close" onclick="document.getElementById('ederModalOverlay').classList.remove('open')" aria-label="Fermer">✕</button>
+    <button class="modal-close" id="ederModalCloseBtn" aria-label="Fermer">✕</button>
     <h3>Nouvelle Annale — Ederador</h3>
     <label for="ederArtTag">Catégorie</label>
     <select id="ederArtTag">
@@ -2052,8 +2052,8 @@
     <label for="ederArtTime">Heure (optionnel)</label>
     <input type="time" id="ederArtTime" />
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="document.getElementById('ederModalOverlay').classList.remove('open')">Annuler</button>
-      <button class="btn-save" onclick="saveEderEntry()">Inscrire aux Annales</button>
+      <button class="btn-cancel" id="ederModalCancelBtn">Annuler</button>
+      <button class="btn-save" id="ederSaveBtn">Inscrire aux Annales</button>
     </div>
   </div>
 </div>
@@ -2061,7 +2061,7 @@
 <!-- ════════════ MODAL LECTURE EDERADOR ════════════ -->
 <div class="read-modal-overlay" id="ederReadModalOverlay">
   <div class="read-modal" style="border-top-color:#8B1A1A">
-    <button class="read-modal-close" onclick="document.getElementById('ederReadModalOverlay').classList.remove('open')">✕ Fermer</button>
+    <button class="read-modal-close" id="ederReadCloseBtn">✕ Fermer</button>
     <div class="read-modal-header">
       <div class="read-modal-meta">
         <div class="read-modal-badges" id="ederRmBadges"></div>
@@ -2077,7 +2077,7 @@
 <!-- ════════════ MODAL ÉCRITURE JOURNAL ════════════ -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <button class="modal-close" onclick="closeModal()" aria-label="Fermer">✕</button>
+    <button class="modal-close" id="modalCloseBtn" aria-label="Fermer">✕</button>
     <h3 id="modalTitle">Nouvelle Entrée — Registre de Babel</h3>
 
     <label for="artTag">Catégorie</label>
@@ -2115,8 +2115,8 @@
     <input type="time" id="artTime" placeholder="HH:MM" />
 
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
-      <button class="btn-save" onclick="saveEntry()">Inscrire au registre</button>
+      <button class="btn-cancel" id="modalCancelBtn">Annuler</button>
+      <button class="btn-save" id="modalSaveBtn">Inscrire au registre</button>
     </div>
   </div>
 </div>
@@ -2124,7 +2124,7 @@
 <!-- ════════════ MODAL LECTURE ARTICLE ════════════ -->
 <div class="read-modal-overlay" id="readModalOverlay">
   <div class="read-modal">
-    <button class="read-modal-close" onclick="closeReadModal()">✕ Fermer</button>
+    <button class="read-modal-close" id="readModalCloseBtn">✕ Fermer</button>
     <div class="read-modal-header">
       <div class="read-modal-meta">
         <div class="read-modal-badges" id="rmBadges"></div>
@@ -2286,8 +2286,8 @@ function renderTimeline() {
           ${timeDisplay ? `<span class="entry-time-val">${esc(timeDisplay)}</span>` : ''}
           <div class="entry-time-dot"></div>
         </div>
-        <div class="journal-entry-card ${esc(priorityClass)}" onclick="openEntry('${esc(entry.id)}')">
-          <button class="entry-del" onclick="deleteEntry(event,'${esc(entry.id)}')" title="Supprimer">✕</button>
+        <div class="journal-entry-card ${esc(priorityClass)}" data-open="${esc(entry.id)}">
+          <button class="entry-del" data-del="${esc(entry.id)}" title="Supprimer">✕</button>
           <div class="entry-header">
             <span class="entry-cat ${esc(catClass(entry.cat))}">${esc(entry.cat)}</span>
             ${priorityBadge}
@@ -2366,6 +2366,11 @@ document.getElementById('journalFilters').addEventListener('click', function(e) 
 function openModal() { document.getElementById('modalOverlay').classList.add('open'); }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 
+// ── Modal Babel — listeners ──
+document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
+document.getElementById('modalSaveBtn').addEventListener('click', saveEntry);
+document.getElementById('readModalCloseBtn').addEventListener('click', closeReadModal);
 document.getElementById('journalWriteBtn').addEventListener('click', openModal);
 document.getElementById('modalOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
@@ -2373,6 +2378,37 @@ document.getElementById('modalOverlay').addEventListener('click', function(e) {
 document.getElementById('readModalOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeReadModal();
 });
+
+// ── Event delegation — Babel journal cards ──
+document.getElementById('journalTimeline').addEventListener('click', function(e) {
+  const delBtn = e.target.closest('[data-del]');
+  if (delBtn) { e.stopPropagation(); deleteEntry(e, delBtn.dataset.del); return; }
+  const card = e.target.closest('[data-open]');
+  if (card) openEntry(card.dataset.open);
+});
+
+document.getElementById('ederModalCloseBtn').addEventListener('click', () => document.getElementById('ederModalOverlay').classList.remove('open'));
+document.getElementById('ederModalCancelBtn').addEventListener('click', () => document.getElementById('ederModalOverlay').classList.remove('open'));
+document.getElementById('ederReadCloseBtn').addEventListener('click', () => document.getElementById('ederReadModalOverlay').classList.remove('open'));
+document.getElementById('ederJournalWriteBtn').addEventListener('click', () => document.getElementById('ederModalOverlay').classList.add('open'));
+document.getElementById('ederModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+document.getElementById('ederReadModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+
+// ── Event delegation — Ederador journal cards ──
+document.getElementById('ederJournalTimeline').addEventListener('click', function(e) {
+  const delBtn = e.target.closest('[data-eder-del]');
+  if (delBtn) { e.stopPropagation(); deleteEderEntry(e, delBtn.dataset.ederDel); return; }
+  const card = e.target.closest('[data-eder-open]');
+  if (card) openEderEntry(card.dataset.ederOpen);
+});
+
+// ── Region tabs ──
+document.getElementById('tab-babel').addEventListener('click', () => switchRegion('babel'));
+document.getElementById('tab-eder').addEventListener('click',  () => switchRegion('ederador'));
 
 // ── Sauvegarder une entrée ──
 function saveEntry() {
@@ -2545,8 +2581,8 @@ function renderEderTimeline() {
           ${entry.time ? `<span class="entry-time-val">${esc(entry.time)}</span>` : ''}
           <div class="entry-time-dot"></div>
         </div>
-        <div class="journal-entry-card ${esc(pClass)}" onclick="openEderEntry('${esc(entry.id)}')">
-          <button class="entry-del" onclick="deleteEderEntry(event,'${esc(entry.id)}')" title="Supprimer">✕</button>
+        <div class="journal-entry-card ${esc(pClass)}" data-eder-open="${esc(entry.id)}">
+          <button class="entry-del" data-eder-del="${esc(entry.id)}" title="Supprimer">✕</button>
           <div class="entry-header">
             <span class="entry-cat ${catClass(entry.cat)}">${esc(entry.cat)}</span>
             ${pBadge}
@@ -2593,16 +2629,6 @@ document.getElementById('ederJournalFilters').addEventListener('click', function
   btn.classList.add('active');
   ederFilter = btn.dataset.cat;
   renderEderTimeline();
-});
-
-document.getElementById('ederJournalWriteBtn').addEventListener('click', () => {
-  document.getElementById('ederModalOverlay').classList.add('open');
-});
-document.getElementById('ederModalOverlay').addEventListener('click', function(e) {
-  if (e.target === this) this.classList.remove('open');
-});
-document.getElementById('ederReadModalOverlay').addEventListener('click', function(e) {
-  if (e.target === this) this.classList.remove('open');
 });
 
 function saveEderEntry() {
