@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Royaume de Babel — Portail Officiel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;1,300&family=UnifrakturMaguntia&display=swap" rel="stylesheet" />
   <style>
     /* ═══════════════════════════════════════════
        VARIABLES & RESET
@@ -999,284 +999,443 @@
     .modal-close:hover { color: var(--white); }
 
     /* ═══════════════════════════════════════════
-       CHRONIQUES DE BABEL
+       RÉGION — THÈMES
     ═══════════════════════════════════════════ */
-    #chroniques {
-      background: linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
-      border-top: 1px solid var(--border);
+    :root {
+      --region: 'babel';
     }
 
-    /* Era grouping */
-    .chro-era-group { margin-bottom: 4rem; }
+    /* Ederador theme overrides */
+    body.ederador {
+      --blue:        #8B1A1A;
+      --blue-dark:   #6B0F0F;
+      --blue-light:  #C44A2A;
+      --night:       #0F0C08;
+      --night-2:     #1A1408;
+      --white:       #F5EDD8;
+      --gold:        #C9A030;
+      --gold-light:  #E8C858;
+      --muted:       #9A8060;
+      --border:      rgba(180,100,30,0.35);
+      --font-display: 'UnifrakturMaguntia', 'Cinzel Decorative', serif;
+    }
+    body.ederador .starfield::before,
+    body.ederador .starfield::after {
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,200,100,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 30% 55%, rgba(255,200,100,0.2) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,200,100,0.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 35%, rgba(255,200,100,0.25) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 70%, rgba(255,200,100,0.2) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 80%, rgba(255,200,100,0.25) 0%, transparent 100%),
+        radial-gradient(2px 2px at 5% 50%, rgba(200,100,50,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 78% 88%, rgba(255,200,100,0.2) 0%, transparent 100%);
+    }
 
-    .chro-era-header {
+    /* ═══════════════════════════════════════════
+       SÉLECTEUR DE RÉGION
+    ═══════════════════════════════════════════ */
+    #region-selector {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: rgba(10,10,14,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 2rem;
       display: flex;
       align-items: center;
-      gap: 1.4rem;
-      margin-bottom: 2rem;
-      position: sticky;
-      top: 60px;
-      z-index: 10;
-      background: var(--night);
-      padding: 0.7rem 0;
+      justify-content: center;
+      gap: 0;
+      height: 44px;
     }
-    .chro-era-badge {
-      font-family: var(--font-display);
-      font-size: 0.68rem;
-      letter-spacing: 0.3em;
+    .region-tab {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0 1.8rem;
+      height: 44px;
+      font-family: var(--font-title);
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: var(--gold);
-      background: rgba(201,168,76,0.08);
-      border: 1px solid rgba(201,168,76,0.28);
-      border-radius: 2px;
-      padding: 0.35rem 1.1rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: rgba(255,255,255,0.3);
+      border-bottom: 2px solid transparent;
+      transition: color 0.3s, border-color 0.3s;
       white-space: nowrap;
     }
-    .chro-era-line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(to right, rgba(201,168,76,0.18), transparent);
+    .region-tab:hover { color: rgba(255,255,255,0.7); }
+    .region-tab.active-babel {
+      color: #6AA3E0;
+      border-bottom-color: #3D7CC9;
     }
-    .chro-era-count {
+    .region-tab.active-eder {
+      color: #C44A2A;
+      border-bottom-color: #8B1A1A;
+    }
+    .region-divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255,255,255,0.1);
+      margin: 0 0.5rem;
+    }
+    .region-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .region-dot-babel { background: #3D7CC9; box-shadow: 0 0 6px #3D7CC9; }
+    .region-dot-eder  { background: #8B1A1A; box-shadow: 0 0 6px #C44A2A; }
+    .region-label-general {
       font-family: var(--font-title);
       font-size: 0.58rem;
-      letter-spacing: 0.2em;
-      color: rgba(140,165,200,0.38);
+      letter-spacing: 0.3em;
       text-transform: uppercase;
-      white-space: nowrap;
+      color: rgba(255,255,255,0.18);
+      padding: 0 1.2rem;
     }
 
-    /* Vertical spine timeline */
-    .chro-timeline {
-      position: relative;
-      padding-left: 2.5rem;
+    /* Push everything down for the region bar */
+    body { padding-top: 44px; }
+    nav  { top: 44px; }
+
+    /* ═══════════════════════════════════════════
+       PORTAL VISIBILITY
+    ═══════════════════════════════════════════ */
+    .portal { display: none; }
+    .portal.active { display: block; }
+
+    /* Fade transition */
+    .portal.active {
+      animation: portalFade 0.45s ease both;
     }
-    .chro-timeline::before {
+    @keyframes portalFade {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══════════════════════════════════════════
+       EDERADOR — STYLES SPÉCIFIQUES
+    ═══════════════════════════════════════════ */
+
+    /* Hero Ederador */
+    .eder-header {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem 6rem;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 35%, rgba(139,26,26,0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 50% 80%, rgba(100,70,10,0.12) 0%, transparent 60%);
+    }
+
+    /* Parchment texture overlay */
+    .eder-header::before {
       content: '';
       position: absolute;
-      left: 7px;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, rgba(61,124,201,0.4), rgba(61,124,201,0.08));
+      inset: 0;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
     }
 
-    /* Individual event */
-    .chro-event {
+    .eder-crest {
+      width: 130px;
+      height: 130px;
+      margin-bottom: 2rem;
+      filter: drop-shadow(0 0 20px rgba(180,80,20,0.6));
+      animation: float 9s ease-in-out infinite;
       position: relative;
-      margin-bottom: 1.4rem;
-      animation: entryIn 0.35s ease both;
-    }
-    .chro-event::before {
-      content: '';
-      position: absolute;
-      left: -2.5rem;
-      top: 1.3rem;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--night-2);
-      border: 2px solid var(--blue);
-      box-shadow: 0 0 10px rgba(61,124,201,0.5);
-      transition: border-color 0.3s, box-shadow 0.3s;
-    }
-    .chro-event:hover::before {
-      border-color: var(--gold);
-      box-shadow: 0 0 14px rgba(201,168,76,0.5);
-    }
-    /* Milestone marker */
-    .chro-event.milestone::before {
-      width: 14px;
-      height: 14px;
-      left: calc(-2.5rem - 2px);
-      background: var(--gold);
-      border-color: var(--gold-light);
-      box-shadow: 0 0 18px rgba(201,168,76,0.7);
+      z-index: 1;
     }
 
-    .chro-card {
-      background: rgba(30,33,48,0.5);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--blue-dark);
-      border-radius: 0 6px 6px 0;
-      padding: 1.2rem 1.4rem 1.1rem 1.5rem;
-      cursor: pointer;
+    .eder-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      color: #C9A030;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
       position: relative;
-      transition: background 0.25s, border-left-color 0.25s, box-shadow 0.25s;
-    }
-    .chro-card:hover {
-      background: rgba(30,33,48,0.85);
-      border-left-color: var(--blue-light);
-      box-shadow: 0 6px 32px rgba(61,124,201,0.13);
-    }
-    .chro-event.milestone .chro-card {
-      border-left-color: var(--gold);
-      background: rgba(30,33,48,0.65);
-    }
-    .chro-event.milestone .chro-card:hover {
-      border-left-color: var(--gold-light);
-      box-shadow: 0 6px 32px rgba(201,168,76,0.18);
+      z-index: 1;
     }
 
-    .chro-card-top {
+    .eder-h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      background: linear-gradient(135deg, #F5EDD8 20%, #C44A2A 60%, #C9A030 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eder-subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      color: #9A8060;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-top: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eder-motto {
+      font-family: 'Cinzel', serif;
+      font-style: italic;
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      color: #C44A2A;
+      letter-spacing: 0.1em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hr-deco-eder {
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
+      gap: 1.2rem;
+      margin: 2.5rem auto;
+      width: min(500px, 80%);
+      position: relative;
+      z-index: 1;
     }
-    .chro-year-tag {
-      font-family: var(--font-title);
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--blue-light);
-      letter-spacing: 0.08em;
-      background: rgba(61,124,201,0.1);
-      border: 1px solid rgba(61,124,201,0.2);
-      border-radius: 2px;
-      padding: 0.1rem 0.55rem;
+    .hr-deco-eder::before, .hr-deco-eder::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #C9A030, transparent);
     }
-    .chro-event.milestone .chro-year-tag {
-      color: var(--gold);
-      background: rgba(201,168,76,0.1);
-      border-color: rgba(201,168,76,0.25);
-    }
-    .chro-milestone-badge {
-      font-family: var(--font-title);
-      font-size: 0.55rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gold);
-      background: rgba(201,168,76,0.12);
-      border: 1px solid rgba(201,168,76,0.3);
-      border-radius: 2px;
-      padding: 0.12rem 0.55rem;
-    }
-    .chro-type-badge {
-      font-family: var(--font-title);
-      font-size: 0.55rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      padding: 0.12rem 0.55rem;
-      border-radius: 2px;
-    }
-    .chro-type-fondation   { color: #e8c87a; background: rgba(201,168,76,0.1);  border: 1px solid rgba(201,168,76,0.22); }
-    .chro-type-guerre      { color: #e87a7a; background: rgba(201,76,76,0.1);   border: 1px solid rgba(201,76,76,0.22); }
-    .chro-type-politique   { color: #7ac4e8; background: rgba(61,124,201,0.1);  border: 1px solid rgba(61,124,201,0.22); }
-    .chro-type-culture     { color: #c87ae8; background: rgba(168,76,201,0.1);  border: 1px solid rgba(168,76,201,0.22); }
-    .chro-type-exploration { color: #7ae8a4; background: rgba(76,201,120,0.1);  border: 1px solid rgba(76,201,120,0.22); }
-    .chro-type-economie    { color: #a8e87a; background: rgba(140,201,76,0.1);  border: 1px solid rgba(140,201,76,0.22); }
-    .chro-type-science     { color: #7ae8e8; background: rgba(76,201,201,0.1);  border: 1px solid rgba(76,201,201,0.22); }
-    .chro-type-autre       { color: var(--muted); background: rgba(140,165,200,0.07); border: 1px solid rgba(140,165,200,0.16); }
+    .hr-deco-eder span { color: #C9A030; font-size: 1.3rem; }
 
-    .chro-title {
-      font-family: var(--font-title);
-      font-size: 0.97rem;
-      font-weight: 600;
-      color: var(--white);
-      line-height: 1.4;
+    /* Nav Ederador */
+    body.ederador nav {
+      background: rgba(15,12,8,0.92);
+      border-bottom-color: rgba(180,100,30,0.35);
+    }
+    body.ederador nav a:hover {
+      color: #F5EDD8;
+      border-bottom-color: #8B1A1A;
+    }
+
+    /* Generic eder section */
+    .eder-section {
+      position: relative;
+      z-index: 2;
+      padding: 6rem 2rem;
+    }
+    .eder-section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.4em;
+      color: #C9A030;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+    .eder-h2 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 700;
+      color: #F5EDD8;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .eder-lead {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #9A8060;
+      max-width: 640px;
+      margin-bottom: 3rem;
+    }
+
+    /* Ederador gouvernement fiche */
+    #eder-gouvernement {
+      background: linear-gradient(180deg, #0F0C08 0%, #1A1408 100%);
+      border-bottom: 1px solid rgba(180,100,30,0.25);
+    }
+
+    .eder-gov-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media (max-width: 760px) { .eder-gov-grid { grid-template-columns: 1fr; } }
+
+    .eder-crest-frame {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .eder-crest-frame img {
+      width: 200px;
+      filter: drop-shadow(0 0 30px rgba(180,80,20,0.5));
+    }
+    .eder-crest-caption {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #9A8060;
+      text-align: center;
+    }
+
+    .eder-gov-info { display: flex; flex-direction: column; gap: 2rem; }
+
+    .eder-info-block {
+      border-left: 2px solid rgba(139,26,26,0.5);
+      padding-left: 1.4rem;
+    }
+    .eder-info-block-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #C9A030;
       margin-bottom: 0.35rem;
     }
-    .chro-excerpt {
-      font-size: 0.84rem;
-      color: rgba(242,244,248,0.48);
-      line-height: 1.65;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+    .eder-info-block-value {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: #F5EDD8;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
     }
-    .chro-footer {
+    .eder-info-block-sub {
+      font-size: 0.85rem;
+      color: #9A8060;
+      line-height: 1.6;
+    }
+
+    .eder-stats-bar {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
       flex-wrap: wrap;
       gap: 0.8rem;
-      margin-top: 0.85rem;
+      margin-top: 1.5rem;
     }
-    .chro-source {
-      font-family: var(--font-title);
+    .eder-stat-pill {
+      background: rgba(139,26,26,0.1);
+      border: 1px solid rgba(180,100,30,0.3);
+      border-radius: 4px;
+      padding: 0.5rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .eder-stat-value {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #C44A2A;
+    }
+    .eder-stat-label {
       font-size: 0.6rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: rgba(140,165,200,0.5);
+      color: #9A8060;
     }
-    .chro-source strong { color: rgba(140,165,200,0.8); }
-    .chro-read-btn {
-      font-family: var(--font-title);
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--blue-light);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
+
+    /* Ederador Territoire */
+    #eder-territoire {
+      background: linear-gradient(180deg, #1A1408 0%, #0F0C08 100%);
+      border-top: 1px solid rgba(180,100,30,0.2);
+      border-bottom: 1px solid rgba(180,100,30,0.2);
+    }
+    .eder-map-frame {
+      position: relative;
+      border: 1px solid rgba(180,100,30,0.35);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(139,26,26,0.2);
+      min-height: 300px;
+      background: rgba(20,14,6,0.8);
       display: flex;
       align-items: center;
-      gap: 0.35rem;
-      transition: color 0.2s;
-    }
-    .chro-read-btn:hover { color: var(--white); }
-    .chro-read-btn svg { transition: transform 0.2s; }
-    .chro-read-btn:hover svg { transform: translateX(3px); }
-
-    /* Delete btn */
-    .chro-del {
-      position: absolute;
-      top: 0.7rem;
-      right: 0.7rem;
-      background: none;
-      border: none;
-      color: rgba(140,165,200,0.2);
-      cursor: pointer;
-      font-size: 0.85rem;
-      padding: 0.2rem 0.3rem;
-      border-radius: 2px;
-      opacity: 0;
-      transition: opacity 0.2s, color 0.2s;
-    }
-    .chro-card:hover .chro-del { opacity: 1; }
-    .chro-del:hover { color: #e08080; }
-
-    /* Toolbar */
-    .chro-toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      flex-direction: column;
       gap: 1rem;
-      margin-top: 2.5rem;
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .chro-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-    }
-
-    /* Empty */
-    .chro-empty {
+      padding: 3rem;
       text-align: center;
-      padding: 4rem 1rem;
-      color: var(--muted);
-      display: none;
     }
-    .chro-empty.visible { display: block; }
-    .chro-empty svg { opacity: 0.2; margin-bottom: 1rem; }
-    .chro-empty p {
-      font-family: var(--font-title);
-      font-size: 0.8rem;
-      letter-spacing: 0.25em;
+    .eder-map-frame::before {
+      content: 'TERRITOIRE D\'EDERADOR';
+      position: absolute;
+      top: 0.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: rgba(180,100,30,0.8);
+      z-index: 5;
+      white-space: nowrap;
+      background: rgba(15,12,8,0.8);
+      padding: 0.2rem 0.8rem;
+      border: 1px solid rgba(180,100,30,0.3);
+      border-radius: 2px;
+    }
+    .eder-map-placeholder {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: rgba(154,128,96,0.4);
       text-transform: uppercase;
     }
-
-    /* Chronique read modal — reuse read-modal styles, just different watermark */
-    #chroReadModalOverlay .read-modal::before {
-      content: 'CHRONIQUES DE BABEL';
+    .eder-map-frame img {
+      width: 100%;
+      display: block;
     }
+
+    /* Ederador Journal */
+    #eder-journal {
+      background: linear-gradient(180deg, #0F0C08 0%, #1A1408 100%);
+      border-top: 1px solid rgba(180,100,30,0.2);
+    }
+
+    /* Override journal styles for ederador context */
+    #eder-journal .journal-toolbar { border-color: rgba(180,100,30,0.25); }
+    #eder-journal .filter-btn {
+      border-color: rgba(180,100,30,0.3);
+      color: #9A8060;
+    }
+    #eder-journal .filter-btn:hover,
+    #eder-journal .filter-btn.active {
+      background: rgba(139,26,26,0.15);
+      border-color: rgba(139,26,26,0.5);
+      color: #F5EDD8;
+    }
+    #eder-journal .journal-write-btn {
+      background: rgba(139,26,26,0.15);
+      border-color: rgba(139,26,26,0.4);
+      color: #C44A2A;
+    }
+    #eder-journal .journal-write-btn:hover {
+      background: rgba(139,26,26,0.3);
+      color: #F5EDD8;
+    }
+    #eder-journal .journal-day-label { color: #C9A030; }
+    #eder-journal .journal-entry-card { border-left-color: #6B0F0F; }
+    #eder-journal .journal-entry-card:hover { border-left-color: #C44A2A; box-shadow: 0 6px 32px rgba(139,26,26,0.2); }
+    #eder-journal .entry-time-dot { background: #8B1A1A; border-color: rgba(139,26,26,0.5); }
+    #eder-journal .journal-timeline::before { background: linear-gradient(to bottom, rgba(139,26,26,0.5), rgba(139,26,26,0.08)); }
+  
     #monnaies {
       background: linear-gradient(180deg, var(--night-2) 0%, var(--night) 100%);
       border-top: 1px solid var(--border);
@@ -1408,13 +1567,30 @@
 <!-- Starfield -->
 <div class="starfield" aria-hidden="true"></div>
 
+<!-- ════════════ SÉLECTEUR DE RÉGION ════════════ -->
+<div id="region-selector" role="tablist" aria-label="Sélection de la région">
+  <span class="region-label-general">Royaume de Babel</span>
+  <div class="region-divider"></div>
+  <button class="region-tab active-babel" id="tab-babel" role="tab" aria-selected="true" onclick="switchRegion('babel')">
+    <span class="region-dot region-dot-babel"></span>
+    Babel
+  </button>
+  <div class="region-divider"></div>
+  <button class="region-tab" id="tab-eder" role="tab" aria-selected="false" onclick="switchRegion('ederador')">
+    <span class="region-dot region-dot-eder"></span>
+    Ederador
+  </button>
+</div>
+
+<!-- ════════════ PORTAIL BABEL ════════════ -->
+<div id="portal-babel" class="portal active">
+
 <!-- ════════════ NAVIGATION ════════════ -->
-<nav>
+<nav id="nav-babel">
   <ul>
     <li><a href="#apropos">À Propos</a></li>
     <li><a href="#symboles">Symboles</a></li>
     <li><a href="#monnaies">Monnaies</a></li>
-    <li><a href="#chroniques">Chroniques</a></li>
     <li><a href="#actualites">Actualités</a></li>
   </ul>
 </nav>
@@ -1641,38 +1817,6 @@
   </div>
 </section>
 
-<!-- ════════════ CHRONIQUES DE BABEL ════════════ -->
-<section id="chroniques">
-  <div class="container">
-    <p class="section-label">Histoire & Mémoire</p>
-    <h2>Chroniques de Babel</h2>
-    <p class="section-lead">Les grandes pages de l'histoire du Royaume — fondations, conquêtes, traités et instants fondateurs gravés dans la mémoire collective.</p>
-
-    <div class="chro-toolbar">
-      <div class="chro-filters" id="chroFilters">
-        <button class="filter-btn active" data-type="tous">Tout</button>
-        <button class="filter-btn" data-type="Fondation">Fondation</button>
-        <button class="filter-btn" data-type="Politique">Politique</button>
-        <button class="filter-btn" data-type="Guerre">Guerre</button>
-        <button class="filter-btn" data-type="Exploration">Exploration</button>
-        <button class="filter-btn" data-type="Culture">Culture</button>
-        <button class="filter-btn" data-type="Économie">Économie</button>
-        <button class="filter-btn" data-type="Science">Science</button>
-      </div>
-      <button class="journal-write-btn" id="chroWriteBtn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        Nouvelle chronique
-      </button>
-    </div>
-
-    <div id="chroContainer"></div>
-    <div class="chro-empty" id="chroEmpty">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-      <p>Aucune chronique inscrite</p>
-    </div>
-  </div>
-</section>
-
 <!-- ════════════ JOURNAL / REGISTRE OFFICIEL ════════════ -->
 <section id="actualites">
   <div class="container">
@@ -1713,70 +1857,220 @@
 </section>
 
 <!-- ════════════ FOOTER ════════════ -->
-<footer>
+<footer id="footer-babel">
   <div class="footer-logo">BABEL</div>
-  <!-- ★ TEXTE DU PIED DE PAGE — MODIFIER ICI ★ -->
   <p>© 2026 — Royaume Insulaire de Babel · Tous droits réservés · Portail officiel</p>
 </footer>
 
-<!-- ════════════ MODAL ÉCRITURE CHRONIQUE ════════════ -->
-<div class="modal-overlay" id="chroModalOverlay">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="chroModalTitle">
-    <button class="modal-close" onclick="closeChroModal()" aria-label="Fermer">✕</button>
-    <h3 id="chroModalTitle">Nouvelle Chronique — Babel</h3>
+</div><!-- /portal-babel -->
 
-    <label for="chroType">Type d'événement</label>
-    <select id="chroType">
-      <option>Fondation</option>
-      <option>Politique</option>
+<!-- ════════════════════════════════════════════
+     PORTAIL EDERADOR
+════════════════════════════════════════════ -->
+<div id="portal-ederador" class="portal">
+
+<!-- Nav Ederador -->
+<nav id="nav-eder">
+  <ul>
+    <li><a href="#eder-gouvernement">Gouvernement</a></li>
+    <li><a href="#eder-territoire">Territoire</a></li>
+    <li><a href="#eder-journal">Annales</a></li>
+  </ul>
+</nav>
+
+<!-- Hero Ederador -->
+<header class="eder-header">
+  <div class="compass-wrap" aria-hidden="true" style="margin-bottom:2rem;">
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="compass-svg" style="filter:drop-shadow(0 0 18px rgba(180,80,20,0.7))">
+      <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(139,26,26,0.4)" stroke-width="1"/>
+      <circle cx="60" cy="60" r="44" fill="none" stroke="rgba(139,26,26,0.2)" stroke-width="0.5"/>
+      <line x1="60" y1="8"  x2="60" y2="112" stroke="rgba(180,80,20,0.4)" stroke-width="0.8" stroke-dasharray="4 4"/>
+      <line x1="8"  y1="60" x2="112" y2="60" stroke="rgba(180,80,20,0.4)" stroke-width="0.8" stroke-dasharray="4 4"/>
+      <polygon points="60,10 66,52 60,58 54,52" fill="#F5EDD8"/>
+      <polygon points="60,110 66,68 60,62 54,68" fill="rgba(154,128,96,0.6)"/>
+      <polygon points="10,60 52,54 58,60 52,66" fill="rgba(154,128,96,0.6)"/>
+      <polygon points="110,60 68,54 62,60 68,66" fill="#F5EDD8"/>
+      <polygon points="60,10 63,30 60,34 57,30" fill="rgba(201,160,48,0.8)" transform="rotate(45 60 60)"/>
+      <polygon points="60,10 63,30 60,34 57,30" fill="rgba(201,160,48,0.8)" transform="rotate(135 60 60)"/>
+      <polygon points="60,10 63,30 60,34 57,30" fill="rgba(196,74,42,0.8)" transform="rotate(225 60 60)"/>
+      <polygon points="60,10 63,30 60,34 57,30" fill="rgba(196,74,42,0.8)" transform="rotate(315 60 60)"/>
+      <circle cx="60" cy="60" r="5" fill="#0F0C08" stroke="rgba(139,26,26,0.8)" stroke-width="1"/>
+      <polygon points="60,5 61.5,8.5 60,12 58.5,8.5" fill="#C9A030" opacity="0.9"/>
+      <polygon points="60,108 61.5,111.5 60,115 58.5,111.5" fill="#C9A030" opacity="0.9"/>
+      <polygon points="5,60 8.5,61.5 12,60 8.5,58.5" fill="#C9A030" opacity="0.9"/>
+      <polygon points="108,60 111.5,61.5 115,60 111.5,58.5" fill="#C9A030" opacity="0.9"/>
+    </svg>
+  </div>
+  <p class="eder-eyebrow">Portail Officiel</p>
+  <h1 class="eder-h1">EDERADOR</h1>
+  <p class="eder-subtitle">Principauté d'Ederador</p>
+  <div class="hr-deco-eder"><span>⚔</span></div>
+  <p class="eder-motto">« Par l'acier et la mémoire, nous demeurons. »</p>
+  <div class="scroll-hint">
+    <span>Défiler</span>
+    <div class="arrow" style="border-color:rgba(154,128,96,0.5)"></div>
+  </div>
+</header>
+
+<!-- ════════ GOUVERNEMENT ════════ -->
+<section class="eder-section" id="eder-gouvernement">
+  <div class="container">
+    <p class="eder-section-label">Structure du Pouvoir</p>
+    <h2 class="eder-h2">Le Gouvernement</h2>
+    <p class="eder-lead">Principauté héréditaire à conseil délibératif, Ederador est dirigée selon les lois ancestrales codifiées dans le Livre de Fer.</p>
+
+    <div class="eder-gov-grid">
+      <div class="eder-crest-frame">
+        <img src="Ederador_crest.png" alt="Armoiries d'Ederador" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div style="display:none;width:160px;height:180px;border:1px solid rgba(180,100,30,0.3);border-radius:4px;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;background:rgba(139,26,26,0.08);">
+          <span style="font-size:3rem">⚜</span>
+          <span style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;color:#9A8060;text-transform:uppercase;">Armoiries</span>
+        </div>
+        <p class="eder-crest-caption">Armoiries officielles d'Ederador<br/>— Gueules et Or —</p>
+      </div>
+
+      <div class="eder-gov-info">
+        <div class="eder-info-block">
+          <div class="eder-info-block-label">Régime</div>
+          <div class="eder-info-block-value">Principauté Héréditaire</div>
+          <div class="eder-info-block-sub">Gouvernement dynastique à conseil délibératif, régi par le Livre de Fer.</div>
+        </div>
+        <div class="eder-info-block">
+          <div class="eder-info-block-label">Chef d'État</div>
+          <div class="eder-info-block-value">— À définir —</div>
+          <div class="eder-info-block-sub">Prince / Princesse régnant(e) d'Ederador</div>
+        </div>
+        <div class="eder-info-block">
+          <div class="eder-info-block-label">Conseil des Seigneurs</div>
+          <div class="eder-info-block-value">— À définir —</div>
+          <div class="eder-info-block-sub">Corps délibératif composé des maisons nobles reconnues.</div>
+        </div>
+        <div class="eder-info-block">
+          <div class="eder-info-block-label">Langue officielle</div>
+          <div class="eder-info-block-value">Langue d'Ederador</div>
+          <div class="eder-info-block-sub">Héritée de l'ancien peuple fondateur, encore parlée à la cour.</div>
+        </div>
+        <div class="eder-stats-bar">
+          <div class="eder-stat-pill">
+            <span class="eder-stat-value">— km²</span>
+            <span class="eder-stat-label">Superficie</span>
+          </div>
+          <div class="eder-stat-pill">
+            <span class="eder-stat-value">—</span>
+            <span class="eder-stat-label">Habitants</span>
+          </div>
+          <div class="eder-stat-pill">
+            <span class="eder-stat-value">— À définir —</span>
+            <span class="eder-stat-label">Capitale</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ TERRITOIRE ════════ -->
+<section class="eder-section" id="eder-territoire">
+  <div class="container">
+    <p class="eder-section-label">Géographie</p>
+    <h2 class="eder-h2">Territoire d'Ederador</h2>
+    <p class="eder-lead">Les terres d'Ederador s'étendent sur des plaines fortifiées, des forêts anciennes et des chaînes de collines défendues depuis des siècles.</p>
+    <div class="eder-map-frame">
+      <img src="ederador_map.png" alt="Carte du territoire d'Ederador"
+        onerror="this.style.display='none'" />
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(154,128,96,0.25)" stroke-width="1"><path d="M3 6l9-3 9 3v12l-9 3-9-3z"/><path d="M12 3v18"/><path d="M3 6l9 3 9-3"/></svg>
+      <p class="eder-map-placeholder">Carte à venir — Replacer par ederador_map.png</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ ANNALES / JOURNAL ════════ -->
+<section class="eder-section" id="eder-journal">
+  <div class="container">
+    <p class="eder-section-label">Registre d'Ederador</p>
+    <h2 class="eder-h2">Annales du Royaume</h2>
+    <p class="eder-lead">Décrets seigneuriaux, nouvelles des provinces et proclamations officielles de la Principauté d'Ederador.</p>
+
+    <div class="journal-toolbar">
+      <div class="journal-filters" id="ederJournalFilters">
+        <button class="filter-btn active" data-cat="tous">Tout</button>
+        <button class="filter-btn" data-cat="Décret Seigneurial">Décrets</button>
+        <button class="filter-btn" data-cat="Diplomatie">Diplomatie</button>
+        <button class="filter-btn" data-cat="Guerre">Guerre</button>
+        <button class="filter-btn" data-cat="Noblesse">Noblesse</button>
+        <button class="filter-btn" data-cat="Commerce">Commerce</button>
+      </div>
+      <button class="journal-write-btn" id="ederJournalWriteBtn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Nouvelle annale
+      </button>
+    </div>
+    <div class="journal-timeline" id="ederJournalTimeline"></div>
+    <div class="journal-empty" id="ederJournalEmpty">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <p>Aucune annale inscrite</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer Ederador -->
+<footer style="background:rgba(15,12,8,0.95);border-top:1px solid rgba(180,100,30,0.25);">
+  <div class="footer-logo" style="color:#C44A2A;text-shadow:0 0 30px rgba(180,80,20,0.5)">EDERADOR</div>
+  <p style="color:#9A8060">© 2026 — Principauté d'Ederador · Tous droits réservés · Portail officiel</p>
+</footer>
+
+</div><!-- /portal-ederador -->
+
+<!-- ════════════ MODAL ÉCRITURE JOURNAL (EDERADOR) ════════════ -->
+<div class="modal-overlay" id="ederModalOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="document.getElementById('ederModalOverlay').classList.remove('open')" aria-label="Fermer">✕</button>
+    <h3>Nouvelle Annale — Ederador</h3>
+    <label for="ederArtTag">Catégorie</label>
+    <select id="ederArtTag">
+      <option>Décret Seigneurial</option>
+      <option>Diplomatie</option>
       <option>Guerre</option>
-      <option>Exploration</option>
-      <option>Culture</option>
-      <option>Économie</option>
-      <option>Science</option>
+      <option>Noblesse</option>
+      <option>Commerce</option>
       <option>Autre</option>
     </select>
-
-    <label for="chroMilestone" style="display:flex;align-items:center;gap:0.5rem;flex-direction:row;margin-top:1rem;">
-      <input type="checkbox" id="chroMilestone" style="width:auto;accent-color:var(--gold)" />
-      <span>Événement fondateur (jalon historique)</span>
-    </label>
-
-    <label for="chroYear">Année / Date historique</label>
-    <input type="text" id="chroYear" placeholder="Ex : An 1, 1247, ~800 av. J-H., Ère de la Fondation…" />
-
-    <label for="chroEra">Ère / Époque</label>
-    <input type="text" id="chroEra" placeholder="Ex : Ère Fondatrice, Siècle d'Or, Époque Moderne…" />
-
-    <label for="chroTitle">Titre de l'événement</label>
-    <input type="text" id="chroTitle" placeholder="Intitulé de la chronique…" />
-
-    <label for="chroSource">Source / Auteur historique</label>
-    <input type="text" id="chroSource" placeholder="Ex : Annales Royales, Chroniqueur Aldren…" />
-
-    <label for="chroBody">Récit</label>
-    <textarea id="chroBody" placeholder="Narration de l'événement historique…" style="min-height:130px"></textarea>
-
+    <label for="ederArtPriority">Importance</label>
+    <select id="ederArtPriority">
+      <option value="normale">Normale</option>
+      <option value="haute">Haute</option>
+      <option value="critique">Critique</option>
+    </select>
+    <label for="ederArtTitle">Titre</label>
+    <input type="text" id="ederArtTitle" placeholder="Intitulé de l'annale…" />
+    <label for="ederArtAuthor">Auteur / Source</label>
+    <input type="text" id="ederArtAuthor" placeholder="Ex : Conseil des Seigneurs, Chancelier…" />
+    <label for="ederArtBody">Contenu</label>
+    <textarea id="ederArtBody" placeholder="Corps du texte…" style="min-height:120px"></textarea>
+    <label for="ederArtDate">Date</label>
+    <input type="date" id="ederArtDate" />
+    <label for="ederArtTime">Heure (optionnel)</label>
+    <input type="time" id="ederArtTime" />
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeChroModal()">Annuler</button>
-      <button class="btn-save" onclick="saveChroEntry()">Inscrire aux Chroniques</button>
+      <button class="btn-cancel" onclick="document.getElementById('ederModalOverlay').classList.remove('open')">Annuler</button>
+      <button class="btn-save" onclick="saveEderEntry()">Inscrire aux Annales</button>
     </div>
   </div>
 </div>
 
-<!-- ════════════ MODAL LECTURE CHRONIQUE ════════════ -->
-<div class="read-modal-overlay" id="chroReadModalOverlay">
-  <div class="read-modal">
-    <button class="read-modal-close" onclick="closeChroReadModal()">✕ Fermer</button>
+<!-- ════════════ MODAL LECTURE EDERADOR ════════════ -->
+<div class="read-modal-overlay" id="ederReadModalOverlay">
+  <div class="read-modal" style="border-top-color:#8B1A1A">
+    <button class="read-modal-close" onclick="document.getElementById('ederReadModalOverlay').classList.remove('open')">✕ Fermer</button>
     <div class="read-modal-header">
       <div class="read-modal-meta">
-        <div class="read-modal-badges" id="chroRmBadges"></div>
-        <h2 id="chroRmTitle"></h2>
+        <div class="read-modal-badges" id="ederRmBadges"></div>
+        <h2 id="ederRmTitle"></h2>
       </div>
     </div>
-    <div class="read-modal-info-row" id="chroRmInfoRow"></div>
+    <div class="read-modal-info-row" id="ederRmInfoRow"></div>
     <div class="read-modal-divider"></div>
-    <div class="read-modal-body" id="chroRmBody"></div>
+    <div class="read-modal-body" id="ederRmBody"></div>
   </div>
 </div>
 
@@ -1844,250 +2138,6 @@
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════════════
-   CHRONIQUES DE BABEL — système avec localStorage
-═══════════════════════════════════════════════════════ */
-
-const CHRO_KEY = 'babel_chroniques_v1';
-
-const DEFAULT_CHRONIQUES = [
-  {
-    id: 'c1',
-    type: 'Fondation',
-    milestone: true,
-    year: 'An 1',
-    era: 'Ère Fondatrice',
-    title: 'La Grande Traversée — Arrivée des Premiers Navigateurs',
-    source: 'Annales Royales de Babel',
-    body: 'Les premiers navigateurs, menés par l\'Amiral-Fondateur Kaelen, accostèrent sur les rivages occidentaux de l\'île après une traversée de quarante-trois jours en haute mer. Ce jour, désormais célébré comme la Fête de la Traversée, marque la naissance officielle du Royaume de Babel.\n\nKaelen planta la rose des vents dans la pierre du rivage, symbole de l\'orientation perpétuelle du peuple Babelien vers la connaissance et la navigation.'
-  },
-  {
-    id: 'c2',
-    type: 'Fondation',
-    milestone: false,
-    year: 'An 12',
-    era: 'Ère Fondatrice',
-    title: 'Construction du Premier Phare de Port-Céleste',
-    source: 'Archives de la Guilde des Bâtisseurs',
-    body: 'Douze ans après la fondation, la Guilde des Bâtisseurs acheva la construction du Grand Phare de Port-Céleste, visible à trente lieues en mer. Ce phare devint le symbole de la capitale et figure encore aujourd\'hui sur les armoiries royales.'
-  },
-  {
-    id: 'c3',
-    type: 'Politique',
-    milestone: true,
-    year: 'An 47',
-    era: 'Ère Fondatrice',
-    title: 'Promulgation de la Charte des Mers',
-    source: 'Conseil Royal — Actes fondamentaux',
-    body: 'Le Grand Conseil réuni en session solennelle promulgua la Charte des Mers, premier texte constitutionnel du Royaume. Ce document établit les droits fondamentaux des citoyens, la structure du Conseil Royal et les principes de navigation comme philosophie d\'État.\n\nLa Charte des Mers reste à ce jour la pierre angulaire de l\'ordre juridique Babelien.'
-  },
-  {
-    id: 'c4',
-    type: 'Exploration',
-    milestone: false,
-    year: 'An 113',
-    era: 'Siècle d\'Or',
-    title: 'Expédition Vers les Îles de l\'Est',
-    source: 'Journal de bord de l\'Amiral Seryne',
-    body: 'L\'Amiral Seryne quitta Port-Céleste à la tête de sept navires pour cartographier les routes orientales inexplorées. L\'expédition revint dix-huit mois plus tard avec des cartes inédites, des traités commerciaux et les premières relations diplomatiques avec les peuples de l\'Archipel de l\'Est.'
-  }
-];
-
-function loadChroniques() {
-  try {
-    const raw = localStorage.getItem(CHRO_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch(e) {}
-  return DEFAULT_CHRONIQUES.map(e => ({...e}));
-}
-
-function saveChroniques(entries) {
-  try { localStorage.setItem(CHRO_KEY, JSON.stringify(entries)); } catch(e) {}
-}
-
-function chroTypeClass(type) {
-  const map = {
-    'Fondation':   'chro-type-fondation',
-    'Guerre':      'chro-type-guerre',
-    'Politique':   'chro-type-politique',
-    'Culture':     'chro-type-culture',
-    'Exploration': 'chro-type-exploration',
-    'Économie':    'chro-type-economie',
-    'Science':     'chro-type-science',
-    'Autre':       'chro-type-autre'
-  };
-  return map[type] || 'chro-type-autre';
-}
-
-let currentChroFilter = 'tous';
-
-function renderChroniques() {
-  const container = document.getElementById('chroContainer');
-  const empty     = document.getElementById('chroEmpty');
-  const entries   = loadChroniques();
-
-  const filtered = currentChroFilter === 'tous'
-    ? entries
-    : entries.filter(e => e.type === currentChroFilter);
-
-  if (filtered.length === 0) {
-    container.innerHTML = '';
-    empty.classList.add('visible');
-    return;
-  }
-  empty.classList.remove('visible');
-
-  // Group by era
-  const eras = {};
-  filtered.forEach(e => {
-    const era = e.era || 'Époque Inconnue';
-    if (!eras[era]) eras[era] = [];
-    eras[era].push(e);
-  });
-
-  // Sort eras by first entry's id order (insertion order)
-  const allEntries = loadChroniques();
-  const eraOrder = [];
-  allEntries.forEach(e => {
-    const era = e.era || 'Époque Inconnue';
-    if (!eraOrder.includes(era)) eraOrder.push(era);
-  });
-
-  let html = '';
-  eraOrder.forEach(era => {
-    if (!eras[era]) return;
-    const events = eras[era];
-    const countLabel = events.length === 1 ? '1 événement' : `${events.length} événements`;
-
-    html += `<div class="chro-era-group">
-      <div class="chro-era-header">
-        <div class="chro-era-badge">${esc(era)}</div>
-        <div class="chro-era-line"></div>
-        <div class="chro-era-count">${esc(countLabel)}</div>
-      </div>
-      <div class="chro-timeline">`;
-
-    events.forEach(entry => {
-      const milestoneClass = entry.milestone ? 'milestone' : '';
-      const excerpt = entry.body ? entry.body.substring(0, 130).replace(/\n/g, ' ') + (entry.body.length > 130 ? '…' : '') : '';
-
-      html += `<div class="chro-event ${milestoneClass}" data-id="${esc(entry.id)}">
-        <div class="chro-card" onclick="openChroEntry('${esc(entry.id)}')">
-          <button class="chro-del" onclick="deleteChroEntry(event,'${esc(entry.id)}')" title="Supprimer">✕</button>
-          <div class="chro-card-top">
-            <span class="chro-year-tag">${esc(entry.year || '—')}</span>
-            ${entry.milestone ? `<span class="chro-milestone-badge">⚑ Événement fondateur</span>` : ''}
-            <span class="chro-type-badge ${esc(chroTypeClass(entry.type))}">${esc(entry.type)}</span>
-          </div>
-          <div class="chro-title">${esc(entry.title)}</div>
-          ${excerpt ? `<div class="chro-excerpt">${esc(excerpt)}</div>` : ''}
-          <div class="chro-footer">
-            ${entry.source ? `<span class="chro-source">Source : <strong>${esc(entry.source)}</strong></span>` : ''}
-            <button class="chro-read-btn">
-              Lire
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>`;
-    });
-
-    html += `</div></div>`;
-  });
-
-  container.innerHTML = html;
-}
-
-function openChroEntry(id) {
-  const entry = loadChroniques().find(e => e.id === id);
-  if (!entry) return;
-
-  document.getElementById('chroRmBadges').innerHTML = `
-    <span class="chro-type-badge ${chroTypeClass(entry.type)}">${esc(entry.type)}</span>
-    ${entry.milestone ? '<span class="chro-milestone-badge">⚑ Événement fondateur</span>' : ''}
-  `;
-  document.getElementById('chroRmTitle').textContent = entry.title;
-  document.getElementById('chroRmInfoRow').innerHTML = `
-    <div class="read-modal-info-item">
-      <span>Année</span>
-      <strong>${esc(entry.year || '—')}</strong>
-    </div>
-    <div class="read-modal-info-item">
-      <span>Époque</span>
-      <strong>${esc(entry.era || '—')}</strong>
-    </div>
-    ${entry.source ? `<div class="read-modal-info-item"><span>Source</span><strong>${esc(entry.source)}</strong></div>` : ''}
-    <div class="read-modal-info-item">
-      <span>Référence</span>
-      <strong>#${esc(entry.id.toUpperCase())}</strong>
-    </div>
-  `;
-  document.getElementById('chroRmBody').textContent = entry.body || '';
-  document.getElementById('chroReadModalOverlay').classList.add('open');
-}
-
-function closeChroReadModal() {
-  document.getElementById('chroReadModalOverlay').classList.remove('open');
-}
-
-function deleteChroEntry(evt, id) {
-  evt.stopPropagation();
-  if (!confirm('Supprimer cette chronique ?')) return;
-  saveChroniques(loadChroniques().filter(e => e.id !== id));
-  renderChroniques();
-}
-
-document.getElementById('chroFilters').addEventListener('click', function(e) {
-  const btn = e.target.closest('.filter-btn');
-  if (!btn) return;
-  this.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  currentChroFilter = btn.dataset.type;
-  renderChroniques();
-});
-
-function openChroModal() { document.getElementById('chroModalOverlay').classList.add('open'); }
-function closeChroModal() { document.getElementById('chroModalOverlay').classList.remove('open'); }
-
-document.getElementById('chroWriteBtn').addEventListener('click', openChroModal);
-document.getElementById('chroModalOverlay').addEventListener('click', function(e) {
-  if (e.target === this) closeChroModal();
-});
-document.getElementById('chroReadModalOverlay').addEventListener('click', function(e) {
-  if (e.target === this) closeChroReadModal();
-});
-
-function saveChroEntry() {
-  const type      = document.getElementById('chroType').value;
-  const milestone = document.getElementById('chroMilestone').checked;
-  const year      = document.getElementById('chroYear').value.trim();
-  const era       = document.getElementById('chroEra').value.trim();
-  const title     = document.getElementById('chroTitle').value.trim();
-  const source    = document.getElementById('chroSource').value.trim();
-  const body      = document.getElementById('chroBody').value.trim();
-
-  if (!title || !body) { alert('Veuillez remplir au moins le titre et le récit.'); return; }
-
-  const entry = {
-    id: 'c' + Date.now(),
-    type, milestone, year: year || '—', era: era || 'Époque Inconnue', title, source, body
-  };
-
-  const entries = loadChroniques();
-  entries.push(entry); // append chronologically at end
-  saveChroniques(entries);
-
-  ['chroYear','chroEra','chroTitle','chroSource','chroBody'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('chroMilestone').checked = false;
-  closeChroModal();
-  renderChroniques();
-}
-
-// Initialisation Chroniques
-renderChroniques();
-
 /* ═══════════════════════════════════════════════════════
    JOURNAL DE BABEL — système complet avec localStorage
 ═══════════════════════════════════════════════════════ */
@@ -2381,6 +2431,203 @@ function convert(fromId, toId, rate) {
 
 // Initialisation
 renderTimeline();
-</script>
+
+/* ═══════════════════════════════════════════════════════
+   SÉLECTEUR DE RÉGION
+═══════════════════════════════════════════════════════ */
+function switchRegion(region) {
+  const portalBabel = document.getElementById('portal-babel');
+  const portalEder  = document.getElementById('portal-ederador');
+  const tabBabel    = document.getElementById('tab-babel');
+  const tabEder     = document.getElementById('tab-eder');
+  const body        = document.body;
+
+  if (region === 'babel') {
+    portalBabel.classList.add('active');
+    portalEder.classList.remove('active');
+    tabBabel.classList.add('active-babel');
+    tabBabel.setAttribute('aria-selected', 'true');
+    tabEder.classList.remove('active-eder');
+    tabEder.setAttribute('aria-selected', 'false');
+    body.classList.remove('ederador');
+  } else {
+    portalEder.classList.add('active');
+    portalBabel.classList.remove('active');
+    tabEder.classList.add('active-eder');
+    tabEder.setAttribute('aria-selected', 'true');
+    tabBabel.classList.remove('active-babel');
+    tabBabel.setAttribute('aria-selected', 'false');
+    body.classList.add('ederador');
+    renderEderTimeline();
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ═══════════════════════════════════════════════════════
+   JOURNAL D'EDERADOR
+═══════════════════════════════════════════════════════ */
+const EDER_KEY = 'ederador_journal_v1';
+
+const EDER_DEFAULT = [
+  {
+    id: 'ed1',
+    cat: 'Décret Seigneurial',
+    priority: 'haute',
+    title: 'Proclamation des Lois de la Forge',
+    author: 'Prince Régnant d\'Ederador',
+    body: 'Par décret princier, les Lois de la Forge sont hereby promulguées, établissant les droits et devoirs des artisans, forgerons et maîtres d\'armes du territoire. Tout ouvrage portant le sceau d\'Ederador doit répondre aux exigences du Livre de Fer.',
+    date: '2026-03-10',
+    time: '09:00'
+  },
+  {
+    id: 'ed2',
+    cat: 'Diplomatie',
+    priority: 'normale',
+    title: 'Traité de non-agression avec Babel',
+    author: 'Conseil des Seigneurs',
+    body: 'Le Conseil des Seigneurs a ratifié le traité de non-agression conjoint avec le Royaume de Babel, consolidant la Dynarchie parlementaire et définissant les zones de souveraineté respective.',
+    date: '2026-02-14',
+    time: '14:00'
+  }
+];
+
+function loadEderEntries() {
+  try {
+    const raw = localStorage.getItem(EDER_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return EDER_DEFAULT.map(e => ({...e}));
+}
+function saveEderEntries(entries) {
+  try { localStorage.setItem(EDER_KEY, JSON.stringify(entries)); } catch(e) {}
+}
+
+let ederFilter = 'tous';
+
+function renderEderTimeline() {
+  const timeline = document.getElementById('ederJournalTimeline');
+  const empty    = document.getElementById('ederJournalEmpty');
+  const entries  = loadEderEntries();
+  const filtered = ederFilter === 'tous' ? entries : entries.filter(e => e.cat === ederFilter);
+
+  if (filtered.length === 0) {
+    timeline.innerHTML = '';
+    empty.classList.add('visible');
+    return;
+  }
+  empty.classList.remove('visible');
+
+  const groups = {};
+  filtered.forEach(e => {
+    const d = e.date || 'sans-date';
+    if (!groups[d]) groups[d] = [];
+    groups[d].push(e);
+  });
+  const sortedDates = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+
+  let html = '';
+  sortedDates.forEach(date => {
+    const dayEntries = groups[date].sort((a, b) => (b.time||'').localeCompare(a.time||''));
+    const countLabel = dayEntries.length === 1 ? '1 entrée' : `${dayEntries.length} entrées`;
+    html += `<div class="journal-day-group">
+      <div class="journal-day-header">
+        <div class="journal-day-label">${esc(formatDateLabel(date))}</div>
+        <div class="journal-day-line"></div>
+        <div class="journal-day-count">${esc(countLabel)}</div>
+      </div>`;
+    dayEntries.forEach(entry => {
+      const pClass = entry.priority !== 'normale' ? `priority-${entry.priority}` : '';
+      const pBadge = entry.priority === 'haute' ? `<span class="entry-priority-badge badge-haute">Haute priorité</span>`
+        : entry.priority === 'critique' ? `<span class="entry-priority-badge badge-critique">⚠ Critique</span>` : '';
+      const excerpt = entry.body ? entry.body.substring(0,120).replace(/\n/g,' ')+(entry.body.length>120?'…':'') : '';
+      html += `<div class="journal-entry" data-id="${esc(entry.id)}">
+        <div class="journal-entry-time">
+          ${entry.time ? `<span class="entry-time-val">${esc(entry.time)}</span>` : ''}
+          <div class="entry-time-dot"></div>
+        </div>
+        <div class="journal-entry-card ${esc(pClass)}" onclick="openEderEntry('${esc(entry.id)}')">
+          <button class="entry-del" onclick="deleteEderEntry(event,'${esc(entry.id)}')" title="Supprimer">✕</button>
+          <div class="entry-header">
+            <span class="entry-cat ${catClass(entry.cat)}">${esc(entry.cat)}</span>
+            ${pBadge}
+          </div>
+          <div class="entry-title">${esc(entry.title)}</div>
+          ${excerpt ? `<div class="entry-excerpt">${esc(excerpt)}</div>` : ''}
+          <div class="entry-footer">
+            ${entry.author ? `<span class="entry-author">par <strong>${esc(entry.author)}</strong></span>` : ''}
+            <button class="entry-read-btn">Lire <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+          </div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  timeline.innerHTML = html;
+}
+
+function openEderEntry(id) {
+  const entry = loadEderEntries().find(e => e.id === id);
+  if (!entry) return;
+  document.getElementById('ederRmBadges').innerHTML = `<span class="entry-cat ${catClass(entry.cat)}">${esc(entry.cat)}</span>`;
+  document.getElementById('ederRmTitle').textContent = entry.title;
+  document.getElementById('ederRmInfoRow').innerHTML = `
+    <div class="read-modal-info-item"><span>Date</span><strong>${formatDateFull(entry.date)}</strong></div>
+    ${entry.time ? `<div class="read-modal-info-item"><span>Heure</span><strong>${esc(entry.time)}</strong></div>` : ''}
+    ${entry.author ? `<div class="read-modal-info-item"><span>Auteur</span><strong>${esc(entry.author)}</strong></div>` : ''}
+  `;
+  document.getElementById('ederRmBody').textContent = entry.body || '';
+  document.getElementById('ederReadModalOverlay').classList.add('open');
+}
+
+function deleteEderEntry(evt, id) {
+  evt.stopPropagation();
+  if (!confirm('Supprimer cette annale ?')) return;
+  saveEderEntries(loadEderEntries().filter(e => e.id !== id));
+  renderEderTimeline();
+}
+
+document.getElementById('ederJournalFilters').addEventListener('click', function(e) {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  this.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ederFilter = btn.dataset.cat;
+  renderEderTimeline();
+});
+
+document.getElementById('ederJournalWriteBtn').addEventListener('click', () => {
+  document.getElementById('ederModalOverlay').classList.add('open');
+});
+document.getElementById('ederModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+document.getElementById('ederReadModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+
+function saveEderEntry() {
+  const cat      = document.getElementById('ederArtTag').value;
+  const priority = document.getElementById('ederArtPriority').value;
+  const title    = document.getElementById('ederArtTitle').value.trim();
+  const author   = document.getElementById('ederArtAuthor').value.trim();
+  const body     = document.getElementById('ederArtBody').value.trim();
+  const dateVal  = document.getElementById('ederArtDate').value;
+  const timeVal  = document.getElementById('ederArtTime').value;
+  if (!title || !body) { alert('Veuillez remplir au moins le titre et le contenu.'); return; }
+  const entry = {
+    id: 'ed' + Date.now(), cat, priority, title, author, body,
+    date: dateVal || new Date().toISOString().split('T')[0],
+    time: timeVal || ''
+  };
+  const entries = loadEderEntries();
+  entries.unshift(entry);
+  saveEderEntries(entries);
+  ['ederArtTitle','ederArtAuthor','ederArtBody','ederArtDate','ederArtTime'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('ederModalOverlay').classList.remove('open');
+  renderEderTimeline();
+}
+
 </body>
 </html>
